@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./weatherApp.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 import L from "leaflet";
+import "./weatherApp.css"; // Import your custom CSS
 
-// Import the Leaflet CSS in your App.css or index.css
-import "leaflet/dist/leaflet.css";
+// Define a custom icon for the map marker
+const customIcon = L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
 
 function App() {
-  const [city, setCity] = useState("");
-  const [weather, setWeather] = useState(null);
-  const [error, setError] = useState("");
-  const [cityCoordinates, setCityCoordinates] = useState(null); // For storing city coordinates
+  const [city, setCity] = useState(""); // For user input
+  const [weather, setWeather] = useState(null); // Weather data
+  const [error, setError] = useState(""); // Error messages
+  const [cityCoordinates, setCityCoordinates] = useState(null); // City coordinates
 
   const API_KEY = "6330cbba243f559d277a832494925b40"; // Replace with your OpenWeatherMap API key
 
+  // Fetch weather and location data
   const fetchWeather = async () => {
     if (!city) {
       setError("Please enter a city.");
@@ -25,12 +31,12 @@ function App() {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
       );
-      setWeather(response.data);
+      setWeather(response.data); // Save weather data
       setCityCoordinates({
         lat: response.data.coord.lat,
         lon: response.data.coord.lon,
-      });
-      setError("");
+      }); // Save coordinates
+      setError(""); // Clear any errors
     } catch (err) {
       setError("City not found. Please try again.");
       setWeather(null);
@@ -39,35 +45,33 @@ function App() {
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>Weather App</h1>
-      <input
-        type="text"
-        placeholder="Enter city"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        style={{ padding: "10px", fontSize: "16px", width: "300px" }}
-      />
-      <button
-        onClick={fetchWeather}
-        style={{
-          padding: "10px 20px",
-          marginLeft: "10px",
-          fontSize: "16px",
-          backgroundColor: "#007BFF",
-          color: "#fff",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
-        Get Weather
-      </button>
+    <div className="app-container">
+      {/* Header Section */}
+      <header>
+        <p>Enter a city name to view its weather and location.</p>
+      </header>
 
-      {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+      {/* Input Section */}
+      <div className="input-container">
+        <input
+          type="text"
+          placeholder="Enter city"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          className="input-box"
+        />
+        <button onClick={fetchWeather} className="search-button">
+          Get Weather
+        </button>
+      </div>
 
+      {/* Error Message */}
+      {error && <p className="error-message">{error}</p>}
+
+      {/* Weather Details */}
       {weather && (
-        <div style={{ marginTop: "20px" }}>
-          <h2>{weather.name}</h2>
+        <div className="weather-details">
+          <h2 className="city-name">{weather.name}</h2>
           <p>Temperature: {weather.main.temp}°C</p>
           <p>Condition: {weather.weather[0].description}</p>
         </div>
@@ -75,19 +79,23 @@ function App() {
 
       {/* Map Display */}
       {cityCoordinates && (
-        <div style={{ marginTop: "20px", height: "500px", width: "100%" }}>
+        <div className="map-container">
           <MapContainer
             center={[cityCoordinates.lat, cityCoordinates.lon]}
             zoom={10}
-            style={{ width: "100%", height: "100%" }}
+            className="leaflet-map"
           >
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
             />
-            <Marker position={[cityCoordinates.lat, cityCoordinates.lon]}>
+            <Marker
+              position={[cityCoordinates.lat, cityCoordinates.lon]}
+              icon={customIcon}
+            >
               <Popup>
-                {weather.name} <br /> {weather.weather[0].description}
+                <strong>{weather.name}</strong> <br />
+                {weather.weather[0].description}
               </Popup>
             </Marker>
           </MapContainer>

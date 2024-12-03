@@ -1,38 +1,68 @@
-/* Input and Button */
-input {
-    padding: 10px;
-    font-size: 16px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Center the App */
-  .App {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #87ceeb, #4682b4);
-    color: #fff;
-    text-align: center;
+/* Container for the whole app */
+.app-container {
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
 
-    padding: 20px;
-  }
-  
+/* Header styles */
+header h1 {
+  font-size: 2.5rem;
+  color: #007BFF;
+}
+header p {
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Input and button container */
+.input-container {
+  margin-top: 20px;
+}
+.input-box {
+  padding: 10px;
+  font-size: 16px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.search-button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  font-size: 16px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+/* Error message styles */
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Weather details styles */
+.weather-details {
+  margin-top: 20px;
+}
+.city-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Map container styles */
+.map-container {
+  margin-top: 20px;
+  height: 500px;
+  width: 100%;
+}
+.leaflet-map {
+  width: 100%;
+  height: 100%;
+}
